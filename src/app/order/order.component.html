@@ -1,0 +1,78 @@
+<section class="container" [ngClass]="formStatus">
+  <header>Purchase Order</header>
+
+  <form [formGroup]="orderForm" (ngSubmit)="OnFormSubmitted()">
+    <table>
+     <thead>
+        <tr>
+          <th>Medicine</th>
+          <th>Type</th>
+          <th>Company</th>
+          <th>Location</th>
+          <th>Quantity</th>
+         <th>Total</th> 
+          <th>Actions</th>
+        </tr>
+      </thead>
+
+      <!-- Table Body -->
+      <tbody formArrayName="orderItems">
+        <tr *ngFor="let orderItem of orderItems.controls; let i = index" [formGroupName]="i">
+          <td>
+            <select
+              formControlName="selectedMedicine"
+              (change)="onMedicineChange(i, $event.target)"
+            >
+              <option value="" disabled>Select Medicine</option>
+              <option *ngFor="let medicine of medicines" [value]="medicine">{{ medicine }}</option>
+            </select>
+          </td>
+          <td>
+            <select
+              formControlName="selectedMedicineType"
+              (change)="onMedicineTypeChange(i, $event.target)"
+            >
+              <option value="" disabled>Select Type</option>
+              <option *ngFor="let type of getMedicineTypesByKey(currentSelectedMedicine)" [value]="type">{{ type }}</option>
+            </select>
+          </td>
+          <td>
+            <select
+              formControlName="selectedCompany"
+              (change)="onCompanyChange(i, $event.target)"
+            >
+              <option value="" disabled>Select Company</option>
+              <option *ngFor="let company of getCompanies(i)" [value]="company">{{ company }}</option>
+            </select>
+          </td>
+          <td>
+            <select formControlName="selectedLocation"
+            >
+              <option value="" disabled>Select Location</option>
+              <option *ngFor="let location of getLocations(i)" [value]="location">{{ location }}</option>
+            </select>
+          </td>
+
+          <td>
+            <input
+              type="number"
+              formControlName="quantity"
+              (change)="onQuantityChange(i,$event.target)"
+            />
+          </td>
+          <td>
+             <label>{{ this.orderItems.at(i).get ("totalPrice").value}}</label> 
+          </td>
+          
+          <td>
+            <button type="button" (click)="removeOrderItem(i)">Remove Item</button>
+          </td>
+        </tr>
+      </tbody>
+    </table>
+    <button type="button" (click)="addOrderItem()">Add Order Item</button>
+    <div><br></div>
+    
+    <input type="submit" value="Submit" class="submit-btn"> 
+  </form>
+</section>
