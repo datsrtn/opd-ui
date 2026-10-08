@@ -16,5 +16,4 @@ public class OpdDemoApplication {
 		SpringApplication.run(OpdDemoApplication.class, args);
 		System.out.println("hi");
 	}
-
 }
